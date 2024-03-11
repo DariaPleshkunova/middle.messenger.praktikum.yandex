@@ -25,10 +25,8 @@ Handlebars.registerHelper('input-list', (inputListBlock, options) => {
     inputListBlock = Handlebars.escapeExpression(inputListBlock);
     
     if (inputLists[inputListBlock]) {
-        return options.fn(inputLists[inputListBlock]); // Возвращаем список, соответствующий переданному типу
+        return options.fn(inputLists[inputListBlock]);
     } else {
-        return "Invalid input list type"; // Если тип списка не существует, возвращаем сообщение об ошибке
+        return "Invalid input list type";
     }
 });
-
-
