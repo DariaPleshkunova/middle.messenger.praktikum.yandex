@@ -1,0 +1,61 @@
+@import "./src/constants.scss";
+
+.input {
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+
+    &__field {
+        &:focus,
+        &.is-active {
+            & + .input__label {
+                top: 0;
+                font-size: 12px;
+            }
+        }
+    }
+
+    &__label {
+        position: absolute;
+        top: 50%;
+        left: 24px;
+        padding: 0 6px;
+        background-color: $color--background-default;
+        font-size: 14px;
+        color: $color--label;
+        transform: translateY(-50%);
+        transition-property: top, font-size;
+        transition-duration: .2s;
+        transition-timing-function: ease;
+    }
+
+    &__hide-button {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        background-color: $color--background-default;
+        transform: translateY(-50%);
+
+        > svg {
+            display: none;
+
+            &.is-active {
+                display: block;
+            }
+        }
+    }
+
+    &__icon {
+        &_position_left {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}

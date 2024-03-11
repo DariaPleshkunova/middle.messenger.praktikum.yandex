@@ -1,0 +1,29 @@
+@import "./src/constants.scss";
+
+.page {
+    display: flex;
+    flex: 1 0 auto;
+    min-height: 100vh;
+
+    &_content {
+        &_start {
+            justify-content: center;
+            align-items: center;
+
+            padding: 76px;
+
+            background-color: $color--background-light-gray;
+        }
+
+        &_chat {
+            max-height: 100vh;
+            background-color: $color--background-default;
+            overflow: hidden;
+        }
+
+        &_blank {
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

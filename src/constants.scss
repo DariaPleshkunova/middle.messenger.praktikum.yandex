@@ -1,0 +1,36 @@
+$color-white: #fff;
+$color-black: #000;
+$color-gray: #eaeaea;
+$color-light-gray: #fbfbfb;
+$color-medium-gray: #999;
+
+$color--label: $color-medium-gray;
+$color--input-border: #cdcdcd;
+$color--stroke: $color-gray;
+
+$color--text-default: $color-black;
+$color--text-secondary: $color-medium-gray;
+
+$color--icon: $color-medium-gray;
+
+$color--background-default: $color-white;
+$color--background-light-gray: $color-light-gray;
+$color--brand: #CCF5AC;
+
+$color--danger: #E0607E;
+$color--info: #6C91C2;
+$color--success: $color--brand;
+
+// $color--danger-hover: #E0607E;
+// $color--info-hover: #6C91C2;
+$color--success-hover: #A7F967;
+
+$color--shadow: rgba(205, 205, 205, .5);
+
+$border-radius--size-s: 12px;
+$border-radius--size-m: 20px;
+$border-radius--size-l: 40px;
+
+$font-family--default: sans-serif;
+
+$padding--side-menu: 20px;

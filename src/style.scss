@@ -1,0 +1,151 @@
+@import "constants.scss";
+@import "mixins.scss";
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a {
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+}
+
+html,
+body {
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+input {
+    display: block;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-width: 320px;
+    font-family: $font-family--default;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1;
+}
+
+fieldset {
+    max-width: 100%;
+}
+
+img,
+picture,
+video {
+    display: block;
+    max-width: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0 0 0 0);
+}
+
+.button-reset {
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.flex {
+    &-column {
+        display: flex;
+        flex-direction: column;
+
+        &_align-center {
+            align-items: center;
+        }
+    }
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon {
+    fill: currentColor;
+
+    &_standard {
+        fill: $color--icon;
+    }
+
+    &_danger {
+        fill: $color--danger;
+    }
+
+    &_info {
+        fill: $color--info;
+    }
+
+
+    &-stroke {
+        stroke: currentColor;
+
+        &_standard {
+            stroke: $color--icon;
+        }
+
+        &_danger {
+            stroke: $color--danger;
+        }
+
+        &_info {
+            stroke: $color--info;
+        }    
+    }
+
+    &_16 {
+        @include square-icon(16)
+    }
+
+    &_18 {
+        @include square-icon(18)
+    }
+
+    &_20 {
+        @include square-icon(20)
+    }
+
+    &_24 {
+        @include square-icon(24)
+    }
+
+    &_36 {
+        @include square-icon(36)
+    }
+}

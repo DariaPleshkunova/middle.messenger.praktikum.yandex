@@ -1,0 +1,75 @@
+@import "./src/constants.scss";
+
+.profile-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    &__form {
+        gap: 40px;
+    }
+    
+    &__base-info {
+        gap: 24px;
+    }
+
+    &__avatar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__avatar {
+        position: relative;
+        width: 120px;
+        height: 120px;
+
+        &:hover {
+            .profile-popup__avatar-cover {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+
+    &__avatar-input {
+        &:disabled {
+            + .profile-popup__avatar-cover {
+                display: none;
+            }
+        }
+    }
+
+    &__avatar-cover {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: rgba($color-black, .5);
+        color: $color-white;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .2s ease;
+        cursor: pointer;
+    }
+
+    &__form-buttons {
+        display: none;
+
+        &.is-active {
+            display: flex;
+        }
+    }
+
+    &__buttons {
+        &.is-hidden {
+            display: none;
+        }
+    }
+}

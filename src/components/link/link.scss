@@ -1,0 +1,19 @@
+@import "./src/constants.scss";
+
+.link {
+    font-size: 12px;
+    color: $color--info;
+    line-height: 1;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom-color .2s ease;
+
+    &_has-icon {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &_black {
+        color: $color-black;
+    }
+}

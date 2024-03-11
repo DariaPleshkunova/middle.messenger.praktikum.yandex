@@ -1,0 +1,15 @@
+@import "./src/constants.scss";
+
+.input-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    &__item {
+        display: block;
+
+        &.is-hidden {
+            display: none;
+        }
+    }
+}
