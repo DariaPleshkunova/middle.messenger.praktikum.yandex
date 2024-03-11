@@ -1,11 +1,18 @@
-@import "./src/constants.scss";
+@import "./src/styles/constants.scss";
 
 .link {
+    background-color: transparent;
+    border: none;
     font-size: 12px;
     color: $color--info;
     line-height: 1;
-    border-bottom: 1px solid transparent;
+    text-align: left;
+    cursor: pointer;
     transition: border-bottom-color .2s ease;
+    
+    &:focus {
+        outline: none;
+    }
 
     &_has-icon {
         display: flex;

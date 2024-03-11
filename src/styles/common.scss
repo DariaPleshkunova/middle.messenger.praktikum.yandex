@@ -1,0 +1,122 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-width: 320px;
+    font-family: $font-family--default;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+a {
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+}
+
+input {
+    display: block;
+}
+
+fieldset {
+    max-width: 100%;
+}
+
+img,
+picture,
+video {
+    display: block;
+    max-width: 100%;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon {
+    fill: currentColor;
+
+    &_standard {
+        fill: $color--icon;
+    }
+
+    &_danger {
+        fill: $color--danger;
+    }
+
+    &_info {
+        fill: $color--info;
+    }
+
+
+    &-stroke {
+        stroke: currentColor;
+
+        &_standard {
+            stroke: $color--icon;
+        }
+
+        &_danger {
+            stroke: $color--danger;
+        }
+
+        &_info {
+            stroke: $color--info;
+        }    
+    }
+
+    &_16 {
+        @include square-icon(16)
+    }
+
+    &_18 {
+        @include square-icon(18)
+    }
+
+    &_20 {
+        @include square-icon(20)
+    }
+
+    &_24 {
+        @include square-icon(24)
+    }
+
+    &_36 {
+        @include square-icon(36)
+    }
+}
+
+.page {
+    display: flex;
+    flex: 1 0 auto;
+    min-height: 100vh;
+}

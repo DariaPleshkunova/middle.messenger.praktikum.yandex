@@ -1,7 +1,7 @@
-{{#> Popup }}
+{{#> Popup dataPopupValue="profile" }}
     <div class="profile-popup js-profile">
-        {{#> Form }}
-            <div class="flex-column flex-column_align-center profile-popup__base-info">
+        {{#> Form formClass="js-profile-form" }}
+            <div class="flex-column flex-column_align-center">
                 <div class="profile-popup__avatar-container">
                     <label>
                         {{> Avatar class="avatar_viewtype_person profile-popup__avatar"}}
@@ -16,9 +16,9 @@
                 {{> Heading text="John Smith" }}
             </div>
 
-            {{> InputList }}
+            {{> InputList inputListBlock="profilePopup" }}
 
-            <div class="buttons-wrapper">
+            <div class="buttons-wrapper profile-popup__form-buttons js-profile-form-buttons">
                 {{> Button class="button_success js-profile-form-submit" type="submit" text="Save changes" }}
                 <button class="button-reset link js-profile-form-cancel">Cancel</button>
             </div>
@@ -33,58 +33,9 @@
         </button>
 
         <a class="link link_has-icon text_danger" page="login">
-            <svg class="icon icon_16">
+            <svg class="icon-stroke icon_16">
                 <use xlink:href="#exit"></use>
             </svg> Log out
         </a>
     </div>
 {{/ Popup }}
-
-
-    {{!-- -
-        const inputs = [
-            {label: "E-mail", type: "email", name: "email"},
-            {label: "Login", type: "text", name: "login"},
-            {label: "Name", type: "text", name: "name"},
-            {label: "Last name", type: "text", name: "surname"},
-            {label: "Phone number", type: "tel", name: "tel"},
-            {label: "Password", type: "password", name: "password", inputFieldClass: "js-password-input"},
-            {label: "Confirm password", type: "password", name: "", listElClass: "is-hidden js-confirm-password-list-el"},
-        ]
-        
-     profile-popup.js-profile
-        form.form.js-profile-form(action="#") 
-            .flex-column.flex-column_align-center.profile-popup__base-info
-                .profile-popup__avatar-container
-                    label.avatar.avatar_viewtype_person.profile-popup__avatar
-                        input.visually-hidden.profile-popup__avatar-input(type="file")
-                        .profile-popup__avatar-cover Change avatar
-                        svg.icon-stroke_standard.avatar__icon
-                            use(xlink:href="#user")
-                    
-                    span.error-text Error: couldn’t load file
-                
-                h2.heading John Smith
-
-            ul.input-list
-                each input, index in inputs
-                    li.input-list__item(class= input.listElClass)
-                        +input("", input.type, input.name, input.label, "", input.inputFieldClass)
-
-                        -if (index === 0)
-                            span.error-text Error: wrong data
-
-            .buttons-wrapper.profile-popup__form-buttons.js-profile-form-buttons
-                button.button.button_success.js-profile-form-submit(type="submit") Save changes
-                button.button-reset.link.js-profile-form-cancel Cancel
-
-        .buttons-wrapper.profile-popup__buttons.js-profile-buttons
-            button.button-reset.link.link_has-icon.js-edit-profile
-                svg.icon.icon_16 
-                    use(xlink:href="#pencil")
-                | Edit profile
-
-            a.link.link_has-icon.text_danger(href="./sign-in.html") 
-                svg.icon-stroke.icon_16 
-                    use(xlink:href="#exit")
-                | Log out --}}
