@@ -1,7 +1,9 @@
 <ul class="input-list">
-    {{#each (input-list)}}
-        <li class="input-list__item">
-            {{> Input }}
-        </li>
-    {{/each}}
+    {{#input-list inputListBlock}}
+        {{#each this}}
+            <li class="input-list__item">
+                {{> Input }}
+            </li>
+        {{/each}}
+    {{/input-list}}
 </ul>

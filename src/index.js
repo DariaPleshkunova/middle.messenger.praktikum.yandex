@@ -1,14 +1,24 @@
 import Handlebars from 'handlebars'
 import * as Components from './components'
+import * as Layout from './layout'
 import * as Pages from './pages'
+
+import { runDOMFunctions } from './dom-functions'
 
 const pages = {
   'chat': [ Pages.ChatPage ],
   'login': [ Pages.LoginPage ],
+  'sign-up': [ Pages.SignUpPage ],
+  'error404': [ Pages.Error404Page ],
+  'error500': [ Pages.Error500Page ],
 }
 
 Object.entries(Components).forEach(([ name, component ]) => {
   Handlebars.registerPartial(name, component)
+})
+
+Object.entries(Layout).forEach(([ name, layout ]) => {
+  Handlebars.registerPartial(name, layout)
 })
 
 function navigate(page) {
@@ -19,6 +29,7 @@ function navigate(page) {
 
 document.addEventListener('DOMContentLoaded', () => {
   navigate('login')
+  runDOMFunctions()  
 })
 
 document.addEventListener('click', (e) => {
@@ -26,8 +37,10 @@ document.addEventListener('click', (e) => {
 
   if (page) {
     navigate(page);
+    runDOMFunctions() 
 
     e.preventDefault();
     e.stopImmediatePropagation();
   }
 })
+

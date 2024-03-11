@@ -1,4 +1,4 @@
-@import "./src/constants.scss";
+@import "./src/styles/constants.scss";
 
 .side-menu {
     display: flex;
@@ -24,21 +24,28 @@
         padding: 0 calc($padding--side-menu / 2) 20px;
     }
 
-    &__avatar {
+    &__avatar-button {
         flex-shrink: 0;
+        margin-right: 14px;
+        transition: margin-right .3s ease;
+    }
+
+    &__avatar {
         width: 56px;
         height: 56px;
-        margin-right: 14px;
         transition: all .3s ease;
     }
 
     &__search-input {
-        &:focus + .side-menu__avatar {
-            width: 0;
-            height: 0;
+        &:focus + .side-menu__avatar-button {
             margin-right: 0;
-            border: none;
-            visibility: hidden;
+
+            .side-menu__avatar {
+                width: 0;
+                height: 0;
+                border: none;
+                visibility: hidden;
+            }
         }
     }
 }

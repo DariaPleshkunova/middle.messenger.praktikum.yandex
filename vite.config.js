@@ -8,6 +8,9 @@ const outDir = resolve(__dirname, 'dist')
 export default defineConfig({
   root,
   // plugins: [handlebars()],
+  server: {
+    port: 3000,
+  },
   build: {
     outDir,
   }
