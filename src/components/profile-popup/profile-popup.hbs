@@ -1,0 +1,41 @@
+{{#> Popup dataPopupValue="profile" }}
+    <div class="profile-popup js-profile">
+        {{#> Form formClass="js-profile-form" }}
+            <div class="flex-column flex-column_align-center">
+                <div class="profile-popup__avatar-container">
+                    <label>
+                        {{> Avatar class="avatar_viewtype_person profile-popup__avatar"}}
+
+                        <input class="visually-hidden profile-popup__avatar-input" type="file">
+                        <div class="profile-popup__avatar-cover">Change avatar</div> 
+                    </label>
+
+                    {{> ErrorText }}
+                </div>
+
+                {{> Heading text="John Smith" }}
+            </div>
+
+            {{> InputList inputListBlock="profilePopup" }}
+
+            <div class="buttons-wrapper profile-popup__form-buttons js-profile-form-buttons">
+                {{> Button class="button_success js-profile-form-submit" type="submit" text="Save changes" }}
+                <button class="button-reset link js-profile-form-cancel">Cancel</button>
+            </div>
+        {{/ Form }}
+    </div>
+
+    <div class="buttons-wrapper profile-popup__buttons js-profile-buttons">
+        <button class="button-reset link link_has-icon js-edit-profile">
+            <svg class="icon icon_16">
+                <use xlink:href="#pencil"></use>
+            </svg> Edit profile
+        </button>
+
+        <a class="link link_has-icon text_danger" page="login">
+            <svg class="icon-stroke icon_16">
+                <use xlink:href="#exit"></use>
+            </svg> Log out
+        </a>
+    </div>
+{{/ Popup }}

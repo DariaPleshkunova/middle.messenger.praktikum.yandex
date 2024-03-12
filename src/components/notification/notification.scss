@@ -1,0 +1,19 @@
+@import "./src/styles/constants.scss";
+
+.notification {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 8px;
+
+    min-width: 24px;
+    height: 24px;
+
+    background-color: $color--brand;
+    border-radius: 100px;
+
+    color: $color--text-default;
+    font-size: 14px;
+    line-height: 1;
+    text-align: center;
+}

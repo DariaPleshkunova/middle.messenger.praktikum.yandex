@@ -1,0 +1,14 @@
+@import "./src/styles/constants.scss";
+
+.text {
+    font-size: 12px;
+    line-height: 1.25;
+
+    &_gray {
+        color: $color--text-secondary;
+    }
+
+    &_danger {
+        color: $color--danger;
+    }
+}

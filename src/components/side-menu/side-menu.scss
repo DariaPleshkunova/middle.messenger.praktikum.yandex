@@ -1,0 +1,51 @@
+@import "./src/styles/constants.scss";
+
+.side-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    max-width: 326px;
+    width: 100%;
+    padding-top: 20px;
+
+    border-right: 1px solid $color--stroke;
+    background-color: $color--background-light-gray;
+    box-shadow: 0 0 4px $color--shadow;
+
+    &__top-container {
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        padding: 0 $padding--side-menu;
+    }
+
+    &__chats-list {
+        padding: 0 calc($padding--side-menu / 2) 20px;
+    }
+
+    &__avatar-button {
+        flex-shrink: 0;
+        margin-right: 14px;
+        transition: margin-right .3s ease;
+    }
+
+    &__avatar {
+        width: 56px;
+        height: 56px;
+        transition: all .3s ease;
+    }
+
+    &__search-input {
+        &:focus + .side-menu__avatar-button {
+            margin-right: 0;
+
+            .side-menu__avatar {
+                width: 0;
+                height: 0;
+                border: none;
+                visibility: hidden;
+            }
+        }
+    }
+}

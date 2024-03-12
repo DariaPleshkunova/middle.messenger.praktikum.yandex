@@ -1,0 +1,59 @@
+@import "./src/styles/constants.scss";
+@import "./src/styles/mixins.scss";
+
+.chat {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas: "chat-avatar chat-name chat-info"
+                         "chat-avatar chat-content chat-content";
+    gap: 4px 12px;
+
+    padding: 12px calc($padding--side-menu / 2);
+    border-radius: $border-radius--size-m;
+    transition: background-color .1s ease;
+
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        background-color: $color-gray;
+    }
+
+    &.is-active {
+        background-color: $color--brand;
+    }
+
+    &__avatar {
+        grid-area: chat-avatar;
+    }
+
+    &__name {
+        grid-area: chat-name;
+    }
+
+    &__info {
+        grid-area: chat-info;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 3px;
+    }
+
+    &__content {
+        display: flex;
+        gap: 10px;
+        grid-area: chat-content;
+    }
+
+    &__text {
+        color: $color--text-secondary;
+
+        @include truncate-text(2);
+    }
+
+    &__notification {
+        flex-shrink: 0;
+        align-self: flex-end;
+    }
+}

@@ -1,0 +1,8 @@
+@import "./src/styles/constants.scss";
+
+.error-text {
+    display: inline-block;
+    margin-top: 1em;
+    color: $color--danger;
+    font-size: 12px;
+}

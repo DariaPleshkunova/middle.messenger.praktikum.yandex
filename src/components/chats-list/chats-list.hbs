@@ -1,0 +1,17 @@
+<ul class="chats-list {{#if class}}{{class}}{{/if}}">
+    <li class="chats-list__item">
+        {{> Chat class="js-chat" pin=true }}
+    </li>
+
+    <li class="chats-list__item">
+        {{> Chat class="js-chat" }}
+    </li>
+
+    <li class="chats-list__item">
+        {{> Chat class="js-chat is-active" }}
+    </li>
+
+    <li class="chats-list__item">
+        {{> Chat class="js-chat" }}
+    </li>
+</ul>

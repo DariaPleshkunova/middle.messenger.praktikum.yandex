@@ -1,0 +1,12 @@
+<div class="page page-start">
+    {{> SvgSprite }}
+    
+    {{#> Board }}
+        {{> @partial-block }}
+    {{/ Board }}
+
+    <div style="position: absolute; top: 10px; right: 10px">
+        <button page="error404">Error 404</button>
+        <button page="error500">Error 500</button>
+    </div>
+</div>

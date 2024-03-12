@@ -1,0 +1,23 @@
+<article class="chat {{#if class}}{{class}}{{/if}}">
+    {{> Avatar class="chat__avatar"}}
+
+    {{> Title class="chat__name" text="Bill Marks"}}
+
+    <div class="chat__info">
+        {{#if pin}}
+            <button class="button-reset">
+                <svg class="icon-stroke_standard icon_16">
+                    <use xlink:href="#pin"></use>
+                </svg>
+            </button>
+        {{/if}}
+
+        {{> Time datetime="12:00" text="12:00"}}
+    </div>
+
+    <div class="chat__content">
+        {{> Text class="chat__text" text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta obcaecati maxime ex! Harum, nulla deleniti. Sapiente tenetur veritatis corrupti illo placeat enim minima eveniet, saepe porro unde ab libero illum!"}}
+
+        {{> Notification class="chat__notification" text="55"}}
+    </div>
+</article>

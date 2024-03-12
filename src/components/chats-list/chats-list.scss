@@ -1,0 +1,15 @@
+@import "./src/styles/constants.scss";
+
+.chats-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    &.is-scroll-blocked {
+        overflow-y: hidden;
+    }
+
+    &.is-hidden {
+        display: none;
+    }
+}
