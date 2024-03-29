@@ -1,4 +1,4 @@
-@import "./src/styles/constants.scss";
+@import "./src/styles/constants";
 
 .profile-popup {
     display: flex;
@@ -13,6 +13,21 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    &__avatar-cover {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: rgba($color-black, .5);
+        color: $color-white;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity .2s ease;
+        cursor: pointer;
     }
 
     &__avatar {
@@ -36,25 +51,6 @@
         }
     }
 
-    &__avatar-cover {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        background-color: rgba($color-black, .5);
-        color: $color-white;
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity .2s ease;
-        cursor: pointer;
-    }
-
     &__form-buttons {
         display: none;
 
@@ -64,8 +60,10 @@
     }
 
     &__buttons {
-        &.is-hidden {
-            display: none;
+        display: none;
+
+        &.is-active {
+            display: flex;
         }
     }
 }

@@ -1,0 +1,7 @@
+@import "./src/styles/constants";
+
+.chat-page {
+    max-height: 100vh;
+    background-color: $color--background-default;
+    overflow: hidden;
+}

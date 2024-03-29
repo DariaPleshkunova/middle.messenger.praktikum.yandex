@@ -1,15 +1,12 @@
-@import "./src/styles/constants.scss";
-@import "./src/styles/mixins.scss";
+@import "./src/styles/constants";
+@import "./src/styles/mixins";
 
 .popup {
     display: none;
     justify-content: center;
     align-items: center;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: 10;
     padding: 20px 6px;
 
@@ -23,27 +20,21 @@
 
     &__overlay {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(#000000, .3);
+        inset: 0;
+        background-color: rgba(#000, .3);
     }
 
     &__wrapper {
         position: relative;
-        
         display: flex;
         flex-direction: column;
         align-items: center;
-
         max-width: 492px;
         width: 100%;
         max-height: 100%;
-        
         background-color: #fff;
         border-radius: 40px;
-        box-shadow: 0 0 20px rgba(205, 205, 205, 0.5);
+        box-shadow: 0 0 20px rgb(205 205 205 / 50%);
     }
     
     &__content {
@@ -54,17 +45,19 @@
         max-height: 100%;
         padding: 40px 70px;
         overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     &__close-button {
         position: absolute;
         top: 20px;
         right: 20px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-        
         width: 26px;
         height: 26px;
     }

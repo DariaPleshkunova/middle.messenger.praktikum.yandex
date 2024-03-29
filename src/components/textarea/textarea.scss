@@ -1,0 +1,21 @@
+@import "./src/styles/constants";
+
+.textarea {
+    border: none;
+    font-size: 14px;
+    overflow-y: auto;
+    transition: height .2s linear;
+    resize: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &::placeholder {
+        color: $color--text-secondary;
+    }
+}

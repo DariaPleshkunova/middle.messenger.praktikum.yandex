@@ -45,4 +45,3 @@
 **Client:** Handlebars, SCSS, Vite
 
 **Server:** Node v18.16.0, Express
-

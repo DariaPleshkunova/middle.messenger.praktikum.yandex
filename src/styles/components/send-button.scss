@@ -1,0 +1,10 @@
+.send-button {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    background-color: $color--success;
+    border: none;
+    border-radius: 50%;
+    color: $color-black;
+    cursor: pointer;
+}

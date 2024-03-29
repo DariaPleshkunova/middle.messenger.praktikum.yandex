@@ -1,0 +1,14 @@
+.message-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+
+    & > .message:not(.is-authored):last-child {
+        border-bottom-left-radius: 0;
+    }
+
+    & > .message.is-authored:last-child {
+        border-bottom-right-radius: 0;
+    }
+}
