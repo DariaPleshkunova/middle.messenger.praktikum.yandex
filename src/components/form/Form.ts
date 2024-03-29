@@ -12,7 +12,7 @@ interface FormProps {
   id?: string,
   isProfileForm?: boolean,
   buttonsWrapperClass?: string,
-  onSubmit?(e: Event): void,
+  onProfileFormSubmit?(e: Event): void,
   textarea?: Textarea,
   avatar?: Avatar,
   errorText?: ErrorText,
@@ -30,54 +30,41 @@ export class Form extends Block {
         submit: (e: Event) => {
           e.preventDefault();
 
-          let formData: { [key: string]: string } = {};
-          let allInputsValid: boolean = true;
-
           const inputs = this.lists.inputItems;
           const textarea = this.children.textarea;
 
           if (inputs) {
-            for (const inputListItem of inputs) {
-              const inputField = inputListItem.children.input.children.inputField;
-              const inputFieldElement = inputField.getContent();
-              const { isValidated, errorText } = inputField.validate();
-
-              inputListItem.children.errorText.setProps({ text: errorText });
-
-              if (isValidated) {
-                const name = inputFieldElement.name;
-                const value = inputFieldElement.value;
-                formData[name] = value;
-              } else {
-                allInputsValid = false;
-                formData = {};
-                break;
-              }
-            }
+            inputs.forEach((inputListItem) => {
+              inputListItem.props.onSubmit();
+              const inputFieldElement = inputListItem.children.input.children.inputField.getContent();
+              this.getFormContent(inputFieldElement);
+            });
           }
 
           if (textarea) {
             const textareaElement = textarea.getContent() as HTMLTextAreaElement;
 
             if (textareaElement) {
-              const name = textareaElement.name;
-              const value = textareaElement.value;
-              formData[name] = value;
+              this.getFormContent(textareaElement);
             }
           }
 
-          if (allInputsValid) {
-            console.log(formData);
-          } else {
-            throw new Error('Wrong input data');
-          }
+          console.log(this.formData);
 
-          if (props.onSubmit) {
-            props.onSubmit(e);
+          if (props.onProfileFormSubmit) {
+            props.onProfileFormSubmit(e);
           }
         },
       },
     });
+  }
+
+  formData: { [key: string]: string } = {};
+
+  getFormContent(target: HTMLInputElement | HTMLTextAreaElement): void {
+    const name = target.name;
+    const value = target.value;
+    this.formData[name] = value;
   }
 
   render() {

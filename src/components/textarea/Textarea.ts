@@ -18,7 +18,7 @@ export class Textarea extends Block {
             const numberOfLineBreaks = (textareaValue.match(/\n/g) || []).length;
             const newHeight = 16 + numberOfLineBreaks * 16 + 24;
 
-            textarea.style.height = `${newHeight} px`;
+            textarea.style.height = `${newHeight}px`;
           }
         },
       },

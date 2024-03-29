@@ -105,7 +105,7 @@ export class ProfilePopup extends Popup {
           }),
         ],
 
-        onSubmit: () => {
+        onProfileFormSubmit: () => {
           const inputItems = this.children.form.lists.inputItems;
 
           inputItems.forEach((item) => {

@@ -17,13 +17,14 @@ export class Input extends Block {
     super({
       ...props,
       inputField: new InputField({
-        name: props.name,
-        type: props.type,
+        ...props,
+        // name: props.name,
+        // type: props.type,
         className: 'input__field',
-        required: props.required,
-        value: props.value,
-        onBlur: props.onBlur,
-        isDisabled: props.isDisabled,
+        // required: props.required,
+        // value: props.value,
+        // onBlur: props.onBlur,
+        // isDisabled: props.isDisabled,
       }),
     });
   }
