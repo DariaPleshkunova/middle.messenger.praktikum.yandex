@@ -11,7 +11,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "vite build && node server.cjs",
-    "lint": "eslint src --ext .ts,.js && tsc --noEmit"
+    "lint": "eslint src --ext .ts,.js && tsc --noEmit",
+    "stylelint": "npx stylelint src/**/*.scss"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.4.0",
