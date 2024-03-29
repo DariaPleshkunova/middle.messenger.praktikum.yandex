@@ -22,5 +22,6 @@
     "no-restricted-syntax": "off",
     "no-console": "off",
     "import/no-extraneous-dependencies": "off"
-  }
+  },
+  "ignorePatterns": ["node_modules/", "dist/", "vite.config.js"]
 }
