@@ -6,7 +6,7 @@
         "src/**/*.ts": "cjs"
       }
     },
-    
+
     "compilerOptions": {
       "outDir": "dist",
       "target": "es2017",
