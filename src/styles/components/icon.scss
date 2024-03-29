@@ -1,0 +1,56 @@
+.icon {
+    fill: currentcolor;
+
+    &_standard {
+        fill: $color--icon;
+    }
+
+    &_danger {
+        fill: $color--danger;
+    }
+
+    &_info {
+        fill: $color--info;
+    }
+
+
+    &-stroke {
+        stroke: currentcolor;
+
+        &_standard {
+            stroke: $color--icon;
+        }
+
+        &_danger {
+            stroke: $color--danger;
+        }
+
+        &_info {
+            stroke: $color--info;
+        }    
+    }
+
+    &_16 {
+        @include square-icon(16)
+    }
+
+    &_18 {
+        @include square-icon(18)
+    }
+
+    &_20 {
+        @include square-icon(20)
+    }
+
+    &_24 {
+        @include square-icon(24)
+    }
+
+    &_32 {
+        @include square-icon(32)
+    }
+
+    &_36 {
+        @include square-icon(36)
+    }
+}

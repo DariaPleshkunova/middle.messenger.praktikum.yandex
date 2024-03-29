@@ -1,0 +1,16 @@
+{
+    "include": ["src"],
+    "exclude": ["node_modules"],
+    "compilerOptions": {
+        "outDir": "dist",
+        "target": "es2021",
+        "declaration": false,
+        "module": "commonjs",
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+   }
+}

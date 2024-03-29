@@ -1,18 +1,13 @@
-@import "./src/styles/constants.scss";
-@import "./src/styles/mixins.scss";
+@import "./src/styles/constants";
+@import "./src/styles/mixins";
 
 .chat {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-rows: auto auto;
-    grid-template-areas: "chat-avatar chat-name chat-info"
-                         "chat-avatar chat-content chat-content";
+    grid-template: "chat-avatar chat-name chat-info" auto "chat-avatar chat-content chat-content" auto / auto 1fr auto;
     gap: 4px 12px;
-
     padding: 12px calc($padding--side-menu / 2);
     border-radius: $border-radius--size-m;
     transition: background-color .1s ease;
-
     cursor: pointer;
 
     &:hover,
