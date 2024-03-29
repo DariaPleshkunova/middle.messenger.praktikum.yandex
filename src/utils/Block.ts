@@ -58,7 +58,7 @@ export default class Block {
     this.componentDidMount();
   }
 
-  componentDidMount(oldProps?: unknown) {}
+  componentDidMount() {}
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -73,7 +73,7 @@ export default class Block {
   }
 
   componentDidUpdate(oldProps: unknown, newProps: unknown) {
-    return true;
+    return oldProps !== newProps;
   }
 
   private _getChildrenPropsAndProps(propsAndChildren: { [key: string]: unknown }) {
@@ -113,7 +113,7 @@ export default class Block {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
     });
 
-    Object.entries(this.lists).forEach(([key, child]) => {
+    Object.entries(this.lists).forEach(([key]) => {
       propsAndStubs[key] = `<div data-id="__l_${tmpId}"></div>`;
     });
 
@@ -131,7 +131,7 @@ export default class Block {
       }
     });
 
-    Object.entries(this.lists).forEach(([key, child]) => {
+    Object.entries(this.lists).forEach(([_key, child]) => {
       const listCont = this._createDocumentElement('template');
 
       child.forEach((item) => {

@@ -9,6 +9,7 @@ interface InputListItemProps {
   required?: boolean,
   value?: null | string,
   isDisabled?: boolean,
+  isErrored?: boolean,
 }
 
 export class InputListItem extends Block {
@@ -16,23 +17,32 @@ export class InputListItem extends Block {
     super({
       ...props,
       input: new Input({
-        name: props.name,
-        type: props.type,
-        label: props.label,
-        required: props.required,
+        ...props,
         value: props.value || '',
-        isDisabled: props.isDisabled,
 
         onBlur: (errorText: string) => {
           const errorTextElement = this.children.errorText;
 
           errorTextElement.setProps({ text: errorText });
+
+          this.isErrored = !!errorText;
         },
       }),
+
+      onSubmit: () => {
+        const inputField = this.children.input.children.inputField;
+        inputField.getContent()?.blur();
+
+        if (this.isErrored) {
+          throw new Error('Input value is not valid');
+        }
+      },
 
       errorText: new ErrorText({ text: null }),
     });
   }
+
+  isErrored: boolean = false;
 
   render() {
     return `
