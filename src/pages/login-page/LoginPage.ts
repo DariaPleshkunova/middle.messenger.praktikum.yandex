@@ -42,13 +42,13 @@ export class LoginPage extends Block {
 
   render() {
     return `
-      <div class="page page-start">
+      <main class="page page-start">
         <div class="board">
           {{{ heading }}}
 
           {{{ form }}}                 
         </div>
-      </div>
+      </main>
     `;
   }
 }

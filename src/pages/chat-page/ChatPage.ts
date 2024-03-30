@@ -11,20 +11,17 @@ export class ChatPage extends Block {
       // text: new Text({className: 'text_gray', text: 'Select a chat'}),
       dialog: new Dialog(),
       profilePopup: new ProfilePopup(),
+      events: {
+        click: (e: Event) => {
+          const profilePopupTrigger = this.getContent()?.querySelector('.js-modal-btn[data-popup-trigger="profile"]');
+
+          if (profilePopupTrigger?.contains(e.target as Node)) {
+            const profilePopup = this.getContent()?.querySelector('[data-popup="profile"]');
+            profilePopup?.classList.add('is-active');
+          }
+        },
+      },
     });
-  }
-
-  initProfilePopup() {
-    const popupModalTrigger = this.getContent()?.querySelector('.js-modal-btn[data-popup-trigger="profile"]');
-
-    popupModalTrigger?.addEventListener('click', () => {
-      const profilePopup = this.getContent()?.querySelector('[data-popup="profile"]');
-      profilePopup?.classList.add('is-active');
-    });
-  }
-
-  componentDidMount() {
-    this.initProfilePopup();
   }
 
   render() {

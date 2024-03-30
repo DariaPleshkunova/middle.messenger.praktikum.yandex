@@ -13,31 +13,25 @@ export class Popup extends Block {
   constructor(props: PopupProps) {
     super({
       ...props,
+      events: {
+        click: (e: Event) => {
+          const closeModal = this.getContent()?.querySelectorAll('.js-close-modal');
+          const modalOverlay = this.getContent()?.querySelector('.js-modal-overlay');
+
+          if (e.target === modalOverlay) {
+            this.getContent()?.classList.remove('is-active');
+          }
+
+          if (closeModal) {
+            closeModal.forEach((item) => {
+              if (item.contains(e.target as Node)) {
+                this.getContent()?.classList.remove('is-active');
+              }
+            });
+          }
+        },
+      },
     });
-  }
-
-  closePopup() {
-    const popupElement = this.getContent();
-    const closeModal = popupElement?.querySelectorAll('.js-close-modal');
-    const modalOverlay = popupElement?.querySelector('.js-modal-overlay');
-
-    if (closeModal) {
-      closeModal.forEach((item) => {
-        item.addEventListener('click', () => {
-          popupElement?.classList.remove('is-active');
-        });
-      });
-    }
-
-    if (modalOverlay) {
-      modalOverlay.addEventListener('click', () => {
-        popupElement?.classList.remove('is-active');
-      });
-    }
-  }
-
-  componentDidMount() {
-    this.closePopup();
   }
 
   render() {

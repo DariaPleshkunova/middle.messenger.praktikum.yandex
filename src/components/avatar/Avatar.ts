@@ -16,7 +16,7 @@ export class Avatar extends Block {
     return `
       <div class="avatar {{ className }}">
         {{#if imageUrl }}
-          <img src="{{ imageUrl }}" alt="#">
+          <img src="{{ imageUrl }}" alt="Картинка профиля">
         {{else}}
           {{#if isStandard }}
             <span> BM </span>

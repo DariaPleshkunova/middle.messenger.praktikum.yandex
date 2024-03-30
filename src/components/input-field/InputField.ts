@@ -28,7 +28,7 @@ export class InputField extends Block {
             if (validationResult) {
               const { errorText } = validationResult;
 
-              if (this.props.onBlur) {
+              if (this.props.onBlur && typeof this.props.onBlur === 'function') {
                 this.props.onBlur(errorText);
               }
             }

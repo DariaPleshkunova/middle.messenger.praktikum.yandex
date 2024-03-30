@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars';
 import EventBus from './EventBus';
 
-export default class Block {
+export default abstract class Block <Props extends Record<string, any> = Record<string, unknown>> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -15,7 +15,7 @@ export default class Block {
 
   private _isMounted: boolean = false;
 
-  props: any;
+  props: Props;
 
   children: { [key: string]: Block } = {};
 
@@ -48,6 +48,16 @@ export default class Block {
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+  }
+
+  private _removeEvents() {
+    const { events = {} } = this.props;
+
+    Object.keys(events).forEach((eventName) => {
+      if (this._element) {
+        this._element.removeEventListener(eventName, events[eventName]);
+      }
+    });
   }
 
   init() {
@@ -109,6 +119,9 @@ export default class Block {
   private _render() {
     const propsAndStubs: { [key: string]: unknown } = { ...this.props };
     const tmpId = Math.floor(100000 + Math.random() * 900000);
+
+    this._removeEvents();
+
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
     });
