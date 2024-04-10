@@ -1,14 +1,12 @@
-@import "./src/styles/constants.scss";
+@import "./src/styles/constants";
 
 .side-menu {
     display: flex;
     flex-direction: column;
     gap: 20px;
-
     max-width: 326px;
     width: 100%;
     padding-top: 20px;
-
     border-right: 1px solid $color--stroke;
     background-color: $color--background-light-gray;
     box-shadow: 0 0 4px $color--shadow;

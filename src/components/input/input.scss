@@ -1,9 +1,22 @@
-@import "./src/styles/constants.scss";
+@import "./src/styles/constants";
 
 .input {
     position: relative;
     display: inline-flex;
     width: 100%;
+
+    &__label {
+        position: absolute;
+        top: 50%;
+        left: 24px;
+        padding: 0 6px;
+        font-size: 14px;
+        color: $color--label;
+        transform: translateY(-50%);
+        transition-property: top, font-size;
+        transition-duration: .2s;
+        transition-timing-function: ease;
+    }
 
     &__field {
         &:focus,
@@ -11,22 +24,9 @@
             & + .input__label {
                 top: 0;
                 font-size: 12px;
+                background-color: $color--background-default;
             }
         }
-    }
-
-    &__label {
-        position: absolute;
-        top: 50%;
-        left: 24px;
-        padding: 0 6px;
-        background-color: $color--background-default;
-        font-size: 14px;
-        color: $color--label;
-        transform: translateY(-50%);
-        transition-property: top, font-size;
-        transition-duration: .2s;
-        transition-timing-function: ease;
     }
 
     &__hide-button {
@@ -40,22 +40,9 @@
         height: 20px;
         background-color: $color--background-default;
         transform: translateY(-50%);
-
-        > svg {
-            display: none;
-
-            &.is-active {
-                display: block;
-            }
-        }
     }
 
-    &__icon {
-        &_position_left {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+    &__hide-icon{
+        flex-shrink: 0;
     }
 }
