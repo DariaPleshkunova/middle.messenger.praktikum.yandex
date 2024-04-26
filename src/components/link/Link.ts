@@ -7,6 +7,7 @@ interface LinkProps {
   iconId?: string,
   iconClass?: string,
   onClick?: (value: Event) => void,
+  dataPopup?: string,
 }
 
 export class Link extends Block {
@@ -26,7 +27,8 @@ export class Link extends Block {
   render() {
     return `
       <button class="link {{ className }} {{#if iconId}} link_has-icon {{/if}}" 
-        type="{{#if type}}{{type}}{{else}}button{{/if}}">
+        type="{{#if type}}{{type}}{{else}}button{{/if}}"
+        {{#if dataPopup}}data-popup-trigger="{{dataPopup}}"{{/if}}>
             
         {{#if iconId}}
             <svg class="{{iconClass}}">

@@ -20,6 +20,10 @@ export class ErrorText extends Block {
     return true;
   }
 
+  componentDidMount(): void {
+    this.hide();
+  }
+
   render() {
     return `
       <span class="error-text"> {{ text }} </span> 

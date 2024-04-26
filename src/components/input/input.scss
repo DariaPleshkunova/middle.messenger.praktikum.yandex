@@ -3,11 +3,12 @@
 .input {
     position: relative;
     display: inline-flex;
+    flex-direction: column;
     width: 100%;
 
     &__label {
         position: absolute;
-        top: 50%;
+        top: 29px;
         left: 24px;
         padding: 0 6px;
         font-size: 14px;

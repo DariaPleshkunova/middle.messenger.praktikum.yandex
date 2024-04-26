@@ -37,6 +37,7 @@
 
     &__content {
         display: flex;
+        justify-content: space-between;
         gap: 10px;
         grid-area: chat-content;
     }
@@ -50,5 +51,9 @@
     &__notification {
         flex-shrink: 0;
         align-self: flex-end;
+
+        &.is-hidden {
+            display: none;
+        }
     }
 }

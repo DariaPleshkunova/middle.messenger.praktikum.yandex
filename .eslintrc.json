@@ -21,7 +21,9 @@
     "no-underscore-dangle": "off",
     "no-restricted-syntax": "off",
     "no-console": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "no-plusplus": "off",
+    "no-prototype-builtins": "off"
   },
   "ignorePatterns": ["node_modules/", "dist/", "vite.config.js"]
 }

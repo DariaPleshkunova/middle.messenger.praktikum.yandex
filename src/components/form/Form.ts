@@ -1,25 +1,26 @@
 import Block from '../../utils/Block';
 import { Textarea } from '../textarea';
 import { Avatar } from '../avatar';
-import { ErrorText } from '../error-text';
 import { Heading } from '../heading';
 import { Button } from '../button';
 import { Link } from '../link';
-import { InputListItem } from '../input-list-item';
+import { Input } from '../input';
+import { Indexed } from '../../types';
 
 interface FormProps {
   className?: string,
   id?: string,
   isProfileForm?: boolean,
   buttonsWrapperClass?: string,
-  onProfileFormSubmit?(e: Event): void,
+  onSubmit?(prop: any): void,
   textarea?: Textarea,
   avatar?: Avatar,
-  errorText?: ErrorText,
   heading?: Heading,
   submitButton?: Button,
   cancelButton?: Link,
-  inputItems?: InputListItem[],
+  inputs?: Input[],
+  emptyInputsAfterSubmit?: boolean,
+  events?: Indexed,
 }
 
 export class Form extends Block {
@@ -30,14 +31,18 @@ export class Form extends Block {
         submit: (e: Event) => {
           e.preventDefault();
 
-          const inputs = this.lists.inputItems;
+          const inputs = this.lists.inputs;
           const textarea = this.children.textarea;
 
           if (inputs) {
-            inputs.forEach((inputListItem) => {
-              inputListItem.props.onSubmit();
-              const inputFieldElement = inputListItem.children.input.children.inputField.getContent();
+            inputs.forEach((input) => {
+              input.props.onSubmit();
+              const inputFieldElement = input.children.inputField.getContent();
               this.getFormContent(inputFieldElement);
+
+              if (props.emptyInputsAfterSubmit) {
+                inputFieldElement.value = '';
+              }
             });
           }
 
@@ -46,13 +51,12 @@ export class Form extends Block {
 
             if (textareaElement) {
               this.getFormContent(textareaElement);
+              textareaElement.value = '';
             }
           }
 
-          console.log(this.formData);
-
-          if (props.onProfileFormSubmit) {
-            props.onProfileFormSubmit(e);
+          if (props.onSubmit) {
+            props.onSubmit(this.formData);
           }
         },
       },
@@ -67,29 +71,48 @@ export class Form extends Block {
     this.formData[name] = value;
   }
 
+  componentDidMount(): void {
+    const formElement = this.getContent();
+    const avatar = this.children.avatar;
+
+    const input = formElement?.querySelector('.profile-popup__avatar-input');
+    input?.addEventListener('input', (e: InputEvent) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const imageUrl = event.target?.result;
+        avatar.setProps({ imageUrl });
+      };
+
+      const target = e.target;
+
+      if (target instanceof HTMLInputElement && target.files?.length) {
+        reader.readAsDataURL(target.files[0]);
+      }
+    });
+  }
+
   render() {
     return ` 
       <form action="#" class="form {{className}}" id={{id}}>
         {{#if isProfileForm}}
           <div class="flex-column flex-column_align-center">
-            <div class="profile-popup__avatar-container">
-              <label>
-                {{{ avatar }}}
+            <label class="profile-popup__avatar-container">
+              {{{ avatar }}}
+              <div class="profile-popup__avatar-cover js-avatar-cover">Change avatar</div> 
 
-                <input class="visually-hidden profile-popup__avatar-input" type="file">
-                <div class="profile-popup__avatar-cover">Change avatar</div> 
-              </label>
-
-              {{{ errorText }}}
-            </div>
+              <input class="visually-hidden profile-popup__avatar-input" type="file" name="avatar" accept="image/*" disabled>
+            </label>
 
             {{{ heading }}}
           </div>
         {{/if}}
 
-        <ul class="input-list">
-          {{{ inputItems }}}
-        </ul>
+        {{#if inputs}}
+          <div class="inputs-wrapper">
+            {{{ inputs }}}
+          </div>
+        {{/if}}
 
         <div class="buttons-wrapper {{buttonsWrapperClass}}">
           {{{ submitButton }}}

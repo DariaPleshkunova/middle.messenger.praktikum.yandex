@@ -1,0 +1,7 @@
+.standard-popup {
+    &__buttons-wrapper {
+        &:not(:first-child) {
+            margin-top: 40px;
+        }
+    }
+}

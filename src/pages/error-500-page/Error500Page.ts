@@ -1,9 +1,11 @@
 import Block from '../../utils/Block';
 import { Link } from '../../components/link';
+import { PageProps } from '../../types';
 
 export class Error500Page extends Block {
-  constructor() {
+  constructor(props: PageProps) {
     super({
+      ...props,
       link: new Link({ text: 'Back to chats' }),
     });
   }

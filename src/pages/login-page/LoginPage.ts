@@ -2,12 +2,19 @@ import Block from '../../utils/Block';
 import { Heading } from '../../components/heading';
 import { Button } from '../../components/button';
 import { Link } from '../../components/link';
-import { InputListItem } from '../../components/input-list-item';
+import { Input } from '../../components/input';
 import { Form } from '../../components/form';
 
+import authController from '../../controllers/authController';
+import userController from '../../controllers/userController';
+import chatController from '../../controllers/chatController';
+import { PageProps } from '../../types';
+import { Badge } from '../../components/badge';
+
 export class LoginPage extends Block {
-  constructor() {
+  constructor(props: PageProps) {
     super({
+      ...props,
       heading: new Heading({ className: 'board__heading', text: 'Sign in to MyMsg' }),
       form: new Form({
         id: 'login-form',
@@ -18,25 +25,36 @@ export class LoginPage extends Block {
         }),
         cancelButton: new Link({
           text: 'Create profile',
+          onClick: props.routeHandlers.onSignupRoute,
         }),
-        inputItems: [
-          new InputListItem({
+        inputs: [
+          new Input({
             name: 'login',
             type: 'text',
             label: 'Login',
             required: true,
-            value: null,
           }),
 
-          new InputListItem({
+          new Input({
             name: 'password',
             type: 'password',
             label: 'Password',
             required: true,
-            value: null,
           }),
         ],
+
+        onSubmit: async (data) => {
+          const isSuccess = await authController.logIn(data);
+
+          if (isSuccess) {
+            await userController.getUser();
+            await chatController.getChats();
+            props.routeHandlers.onChatsRoute();
+          }
+        },
       }),
+
+      badge: new Badge({}),
     });
   }
 
@@ -46,8 +64,12 @@ export class LoginPage extends Block {
         <div class="board">
           {{{ heading }}}
 
-          {{{ form }}}                 
+          {{{ form }}}  
+          
+          {{{ button }}}
         </div>
+
+        {{{ badge }}}
       </main>
     `;
   }

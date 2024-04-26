@@ -1,16 +1,7 @@
 import Block from '../../utils/Block';
-import { Link } from '../link';
-import { Form } from '../form';
-
-interface PopupProps {
-  dataPopup?: string,
-  editProfileButton?: Link,
-  logOutButton?: Link,
-  form?: Form,
-}
 
 export class Popup extends Block {
-  constructor(props: PopupProps) {
+  constructor(props: Record<string, unknown>) {
     super({
       ...props,
       events: {
