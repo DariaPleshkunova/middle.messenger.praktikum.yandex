@@ -9,17 +9,6 @@
         gap: 40px;
     }
 
-    &__avatar-container {
-        position: relative;
-        border-radius: 50%;
-
-        &:hover {
-            > .profile-popup__avatar-cover {
-                opacity: 1;
-            }
-        }
-    }
-
     &__avatar-cover {
         display: none;
         position: absolute;
@@ -39,6 +28,17 @@
         &.is-active {
             display: flex;
             cursor: pointer;
+        }
+    }
+
+    &__avatar-container {
+        position: relative;
+        border-radius: 50%;
+
+        &:hover {
+            > .profile-popup__avatar-cover {
+                opacity: 1;
+            }
         }
     }
 
