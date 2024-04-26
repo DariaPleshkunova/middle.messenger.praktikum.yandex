@@ -27,6 +27,7 @@ export class Page extends Block {
 const router = new Router('app');
 
 const routes = {
+  base: '/',
   login: '/login',
   signup: '/sign-up',
   chats: '/messenger',
@@ -96,6 +97,6 @@ if (window.location.pathname === routes.chats) {
 
 const pathnames = Object.values(routes);
 
-if (!pathnames.find((path) => path === window.location.pathname)) {
+if (window.location.pathname && !pathnames.find((path) => path === window.location.pathname)) {
   routeHandlers.onError404Route();
 }
