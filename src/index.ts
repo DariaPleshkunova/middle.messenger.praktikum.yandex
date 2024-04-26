@@ -50,6 +50,9 @@ export const routeHandlers = {
   onError500Route: () => {
     router.go(routes.error500);
   },
+  onBackRoute: () => {
+    router.back();
+  },
 };
 
 const loginPage = new Page({
@@ -81,10 +84,18 @@ router
   .use(routes.error500, error500Page)
   .start();
 
-userController.getUser().then((isSuccess) => {
-  if (isSuccess) {
-    routeHandlers.onChatsRoute();
-  } else {
-    routeHandlers.onLoginRoute();
-  }
-});
+if (window.location.pathname === routes.chats) {
+  userController.getUser().then((isSuccess) => {
+    if (isSuccess) {
+      routeHandlers.onChatsRoute();
+    } else {
+      routeHandlers.onLoginRoute();
+    }
+  });
+}
+
+const pathnames = Object.values(routes);
+
+if (!pathnames.find((path) => path === window.location.pathname)) {
+  routeHandlers.onError404Route();
+}

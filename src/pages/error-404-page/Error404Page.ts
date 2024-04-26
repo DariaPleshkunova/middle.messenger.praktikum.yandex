@@ -6,7 +6,13 @@ export class Error404Page extends Block {
   constructor(props: PageProps) {
     super({
       ...props,
-      link: new Link({ text: 'Back to chats' }),
+      link: new Link({
+        text: 'Back to chats',
+        onClick: () => {
+          props.routeHandlers.onBackRoute();
+          props.routeHandlers.onBackRoute();
+        },
+      }),
     });
   }
 
