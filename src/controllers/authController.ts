@@ -27,8 +27,6 @@ const authController = {
     try {
       store.set('badge', null);
       const response = await api.logIn(data) as XMLHttpRequest;
-
-      console.log(response);
       const status = response?.status;
 
       if (status >= 200 && status < 300) {
@@ -36,6 +34,11 @@ const authController = {
       }
 
       const responseData = JSON.parse(response.response);
+
+      if (responseData.reason === 'User already in system') {
+        return true;
+      }
+
       throw new Error(responseData.reason);
     } catch (err) {
       store.set('badge', { message: err.message });
