@@ -8,7 +8,6 @@ interface InputFieldProps {
   name: string,
   placeholder?: string,
   required?: boolean,
-  value?: string,
   inputValue?: string,
   isDisabled?: boolean,
   onBlur?: (value: string) => void,
@@ -28,7 +27,7 @@ export class InputField extends Block {
             if (validationResult) {
               const { errorText } = validationResult;
 
-              if (this.props.onBlur) {
+              if (this.props.onBlur && typeof this.props.onBlur === 'function') {
                 this.props.onBlur(errorText);
               }
             }
@@ -40,7 +39,6 @@ export class InputField extends Block {
       isDisabled: props.isDisabled || false,
       activeClass: '',
       skipValidation: props.skipValidation || false,
-      inputValue: props.value,
     });
   }
 

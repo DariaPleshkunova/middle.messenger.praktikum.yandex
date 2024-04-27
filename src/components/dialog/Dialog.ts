@@ -3,57 +3,81 @@ import Block from '../../utils/Block';
 import { Avatar } from '../avatar';
 import { MoreButton } from '../more-button';
 import { Title } from '../title';
-import { Date } from '../date';
 import { Message } from '../message';
 import { MessageForm } from '../message-form';
 
+import store from '../../utils/Store';
+import connect from '../../utils/connect';
+import { ContextMenu } from '../context-menu';
+import { DialogItem } from '../dialog-item';
+import { ChatProps } from '../chat/Chat';
+import { MessageProps } from '../message/Message';
+import WsController from '../../controllers/wsController';
+
+import {
+  Indexed,
+  ChatState,
+  UserState,
+  MessageState,
+} from '../../types';
+
+interface DialogProps {
+  currentChat?: ChatProps;
+  messages?: MessageProps[];
+  isActive?: boolean;
+}
+
 export class Dialog extends Block {
-  constructor() {
+  constructor(props: DialogProps) {
     super({
+      ...props,
       avatar: new Avatar({ isStandard: true }),
-      title: new Title({ text: 'Bill Marks' }),
-      moreButton: new MoreButton(),
-      date: new Date({ className: 'dialog__date', text: 'Mar, 4', datetime: '2024-03-04' }),
-      messageGroup1: [
-        new Message({ text: 'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой. Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро' }),
-        new Message({ text: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illo vel facere cupiditate quos ratione consectetur? Animi eveniet possimus, quia dicta explicabo perspiciatis nihil similique vero perferendis facere quidem nemo porro.' }),
-        new Message({ imageUrl: 'https://images.unsplash.com/photo-1520500807606-4ac9ae633574?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }),
-      ],
-      messageGroup2: [
-        new Message({ className: 'is-authored', text: 'Круто!' }),
-        new Message({ className: 'is-authored', text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed omnis, similique culpa quae corrupti magnam officia ratione nulla, blanditiis quibusdam quisquam? Ab illo unde obcaecati earum dolorum corporis, reiciendis odit?' }),
-      ],
-      messageForm: new MessageForm({}),
+      title: new Title({}),
+      moreButton: new MoreButton({
+        onClick: () => {
+          this.children.dialogMenu.setProps({ isActive: true });
+        },
+      }),
+      dialogMenu: new ContextMenu({ className: 'dialog__menu' }),
+      dialogItems: [],
+      messageForm: new MessageForm({
+        onSubmit(data: Record<string, string>) {
+          const socket = store.getState().socket as WsController;
+
+          socket.sendMessage(data.message);
+        },
+      }),
     });
   }
 
   render() {
+    const currentChat = this.props.currentChat as ChatState;
+
+    if (currentChat) {
+      this.children.avatar.setProps({ imageUrl: currentChat.avatar });
+      this.children.title.setProps({ text: currentChat.title });
+    }
+
     return `
-      <div class="dialog">
+      <div class="dialog {{#if isActive}}is-active{{/if}}">
         <header class="dialog__header">
           <div class="dialog__author">
             {{{ avatar }}}
 
             {{{ title }}}
           </div>
-
-          {{{ moreButton }}}
+          
+          <div class="dialog__more-button-wrapper">
+            {{{ moreButton }}}
+            
+            {{{ dialogMenu }}}
+          </div>
         </header>
 
         <div class="dialog__container">
           <div class="dialog__wrapper">
             <div class="dialog__content">
-              <div class="dialog__date-wrapper">
-                {{{ date }}}
-
-                <div class="message-group">
-                  {{{ messageGroup1 }}}
-                </div>
-
-                <div class="message-group">
-                  {{{ messageGroup2 }}}
-                </div>
-              </div>
+              {{{ dialogItems }}}
             </div>
           </div>
 
@@ -63,3 +87,59 @@ export class Dialog extends Block {
     `;
   }
 }
+
+function mapDialogToProps(state: Indexed) {
+  const currentChatId = state.currentChatId;
+  let currentChat: ChatState | {} = {};
+  const userState = state.user as UserState;
+  const messagesState = state.messages as MessageState[];
+  const chatsState = state.chats as ChatState[];
+
+  if (currentChatId) {
+    const foundChat = chatsState.find((chat) => chat.id === currentChatId);
+
+    if (foundChat) {
+      currentChat = foundChat;
+    }
+  }
+
+  function splitMessagesByDate(messages: Message[]): { [date: string]: Message[] } {
+    const messagesByDate: { [date: string]: Message[] } = {};
+
+    messages?.forEach((message) => {
+      const messageProps = message.props as MessageProps;
+      const date = messageProps?.datetime?.split('T').shift();
+
+      if (date) {
+        if (!messagesByDate[date]) {
+          messagesByDate[date] = [];
+        }
+
+        messagesByDate[date].push(message);
+      }
+    });
+
+    return messagesByDate;
+  }
+
+  const messages: Message[] = messagesState?.map((message) => new Message({
+    text: message.content,
+    className: message.user_id === userState.id ? 'is-authored' : '',
+    datetime: message.time,
+  })).reverse();
+
+  const messagesItems = splitMessagesByDate(messages);
+  const messItems = [];
+
+  for (const [date, messagesArray] of Object.entries(messagesItems)) {
+    messItems.push(new DialogItem({ datetime: date, messages: messagesArray }));
+  }
+
+  return {
+    currentChat,
+    messages: messItems,
+    isActive: Object.keys(currentChat).length > 0,
+  };
+}
+
+export default connect(Dialog as typeof Block, mapDialogToProps);

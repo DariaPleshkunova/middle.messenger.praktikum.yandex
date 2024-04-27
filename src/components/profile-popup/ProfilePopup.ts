@@ -1,30 +1,58 @@
 import { Avatar } from '../avatar';
 import { Button } from '../button';
-import { ErrorText } from '../error-text';
 import { Heading } from '../heading';
 import { Link } from '../link';
 import { Popup } from '../popup';
-import { InputListItem } from '../input-list-item';
+import { Input } from '../input';
 import { Form } from '../form';
+import Block from '../../utils/Block';
+
+import connect from '../../utils/connect';
+import authController from '../../controllers/authController';
+import userController from '../../controllers/userController';
+
+import url from '../../api/url';
+import { Indexed, PageProps, UserState } from '../../types';
 
 export class ProfilePopup extends Popup {
-  constructor() {
+  constructor(props: PageProps) {
     super({
+      ...props,
+
+      editPasswordButton: new Link({
+        className: 'link_has-icon js-modal-btn',
+        dataPopup: 'edit-password',
+        text: 'Edit password',
+        iconId: '#pencil',
+        iconClass: 'icon icon_16',
+      }),
+
       editProfileButton: new Link({
         className: 'link_has-icon',
         text: 'Edit profile',
         iconId: '#pencil',
         iconClass: 'icon icon_16',
         onClick: () => {
-          const inputItems = this.children.form.lists.inputItems;
+          const form = this.children.form;
+          const formElement = form.getContent();
+          const inputs = form.lists.inputs;
 
-          inputItems.forEach((item) => {
-            const inputField = item.children.input.children.inputField;
+          inputs.forEach((item) => {
+            const inputField = item.children.inputField;
             inputField.setProps({ isDisabled: false });
           });
 
+          const avatarCover = formElement?.querySelector('.js-avatar-cover');
+          avatarCover?.classList.add('is-active');
+          const avatarInput = formElement?.querySelector('input[name="avatar"]') as HTMLInputElement;
+
+          if (avatarInput) {
+            avatarInput.disabled = false;
+          }
+
           this.profileFormButtons?.classList.add('is-active');
           this.profileButtons?.classList.remove('is-active');
+          this.profileButton?.classList.add('is-active');
         },
       }),
 
@@ -33,6 +61,14 @@ export class ProfilePopup extends Popup {
         text: 'Log out',
         iconId: '#exit',
         iconClass: 'icon-stroke icon_16',
+        onClick: async () => {
+          const isSuccess = await authController.logOut();
+
+          if (isSuccess) {
+            this.getContent()?.classList.remove('is-active');
+            props.routeHandlers.onLoginRoute();
+          }
+        },
       }),
 
       form: new Form({
@@ -40,81 +76,78 @@ export class ProfilePopup extends Popup {
         id: 'edit-profile-form',
         isProfileForm: true,
 
-        avatar: new Avatar({ className: 'avatar_viewtype_person profile-popup__avatar' }),
-        errorText: new ErrorText({ text: 'Error' }),
-        heading: new Heading({ text: 'John Smith' }),
+        avatar: new Avatar({
+          className: 'avatar_viewtype_person profile-popup__avatar',
+        }),
+
+        heading: new Heading({ text: 'Name' }),
 
         buttonsWrapperClass: 'profile-popup__form-buttons js-profile-form-buttons',
         submitButton: new Button({ className: 'button_success js-profile-form-submit', type: 'submit', text: 'Save changes' }),
         cancelButton: new Link({ className: 'js-profile-form-cancel', text: 'Cancel' }),
-        inputItems: [
-          new InputListItem({
+        inputs: [
+          new Input({
             name: 'login',
             type: 'text',
             label: 'Login',
             required: true,
-            value: 'MyLogin',
             isDisabled: true,
           }),
-          new InputListItem({
+          new Input({
             name: 'first_name',
             type: 'text',
             label: 'Name',
             required: true,
-            value: 'Bill',
             isDisabled: true,
           }),
-          new InputListItem({
+          new Input({
             name: 'second_name',
             type: 'text',
             label: 'Last Name',
             required: true,
-            value: 'Marks',
             isDisabled: true,
           }),
-          new InputListItem({
+          new Input({
             name: 'email',
             type: 'email',
             label: 'E-mail',
             required: true,
-            value: 'myemail@mail.com',
             isDisabled: true,
           }),
-          new InputListItem({
+          new Input({
             name: 'phone',
             type: 'tel',
             label: 'Phone number',
             required: true,
-            value: '+75729927766',
-            isDisabled: true,
-          }),
-          new InputListItem({
-            name: 'password',
-            type: 'password',
-            label: 'Password',
-            required: true,
-            value: 'Qwerty123',
-            isDisabled: true,
-          }),
-          new InputListItem({
-            name: 'confirm_password',
-            type: 'password',
-            label: 'Confirm Password',
-            value: 'Qwerty123',
             isDisabled: true,
           }),
         ],
 
-        onProfileFormSubmit: () => {
-          const inputItems = this.children.form.lists.inputItems;
+        onSubmit: async (data) => {
+          const form = this.children.form;
+          const formElement = form.getContent();
+          const avatarInput = formElement?.querySelector('input[name="avatar"]') as HTMLInputElement;
+          const avatarFile = avatarInput.files ? avatarInput.files[0] : null;
 
-          inputItems.forEach((item) => {
-            const inputField = item.children.input.children.inputField;
-            inputField.setProps({ isDisabled: true });
-          });
+          const isEditProfileSuccess = await userController.editProfile(data);
+          const isEditAvatarSuccess = await userController.editAvatar(avatarFile);
 
-          this.profileFormButtons?.classList.remove('is-active');
-          this.profileButtons?.classList.add('is-active');
+          if (isEditProfileSuccess && isEditAvatarSuccess) {
+            const inputs = form.lists.inputs;
+
+            inputs.forEach((input) => {
+              const inputField = input.children.inputField;
+              inputField.setProps({ isDisabled: true });
+            });
+
+            const avatarCover = formElement?.querySelector('.js-avatar-cover');
+            avatarCover?.classList.remove('is-active');
+
+            avatarInput.disabled = true;
+
+            this.profileFormButtons?.classList.remove('is-active');
+            this.profileButtons?.classList.add('is-active');
+          }
         },
       }),
     });
@@ -124,8 +157,28 @@ export class ProfilePopup extends Popup {
 
   profileButtons = this.getContent()?.querySelector('.js-profile-buttons');
 
+  profileButton = this.getContent()?.querySelector('.js-profile-button');
+
   render() {
+    console.log('rende');
     const parentRender = super.render();
+
+    const form = this.children.form;
+    form.children.heading.setProps({ text: this.props.first_name });
+
+    form.lists.inputs.forEach((input) => {
+      const inputField = input.children.inputField;
+      const inputName = inputField.props.name;
+      const inputValue = this.props[inputName];
+
+      inputField.setProps({
+        inputValue,
+      });
+    });
+
+    if (this.props.avatar) {
+      form.children.avatar.setProps({ imageUrl: `${url.resources}/${this.props.avatar}` });
+    }
 
     return parentRender.replace('{{dataPopup}}', 'profile').replace('{{ popupContent }}', `
       <div class="profile-popup">
@@ -133,9 +186,32 @@ export class ProfilePopup extends Popup {
       </div>
 
       <div class="buttons-wrapper profile-popup__buttons js-profile-buttons is-active">
+        {{{ editPasswordButton }}}
         {{{ editProfileButton }}}
         {{{ logOutButton }}}
+      </div>
+
+      <div class="buttons-wrapper profile-popup__buttons js-profile-button">
+        abc
       </div>
     `);
   }
 }
+
+function mapUserToProps(state: Indexed) {
+  const userState = state.user as UserState;
+
+  if (userState) {
+    return {
+      id: userState.id,
+      login: userState.login,
+      first_name: userState.first_name,
+      second_name: userState.second_name,
+      avatar: userState.avatar,
+      email: userState.email,
+      phone: userState.phone,
+    };
+  }
+}
+
+export default connect(ProfilePopup as typeof Block, mapUserToProps);

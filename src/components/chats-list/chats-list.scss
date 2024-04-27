@@ -12,4 +12,8 @@
     &.is-hidden {
         display: none;
     }
+
+    &__context-menu {
+        position: absolute;
+    }
 }

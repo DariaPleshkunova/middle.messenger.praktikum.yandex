@@ -1,3 +1,4 @@
 import './dialog.scss';
+import connect from './Dialog';
 
-export { Dialog } from './Dialog';
+export { connect as Dialog };

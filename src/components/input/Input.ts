@@ -1,5 +1,6 @@
 import Block from '../../utils/Block';
 import { InputField } from '../input-field';
+import { ErrorText } from '../error-text';
 
 interface InputProps {
   className?: string,
@@ -7,9 +8,7 @@ interface InputProps {
   name: string,
   type: string,
   required?: boolean,
-  value?: string,
   isDisabled?: boolean,
-  onBlur?: (value: string) => void,
 }
 
 export class Input extends Block {
@@ -18,16 +17,36 @@ export class Input extends Block {
       ...props,
       inputField: new InputField({
         ...props,
-        // name: props.name,
-        // type: props.type,
         className: 'input__field',
-        // required: props.required,
-        // value: props.value,
-        // onBlur: props.onBlur,
-        // isDisabled: props.isDisabled,
+
+        onBlur: (errorText: string) => {
+          const errorTextElement = this.children.errorText;
+
+          errorTextElement.setProps({ text: errorText });
+          this.isErrored = !!errorText;
+
+          if (this.isErrored) {
+            errorTextElement.show();
+          } else {
+            errorTextElement.hide();
+          }
+        },
       }),
+
+      onSubmit: () => {
+        const inputField = this.children.inputField;
+        inputField.getContent()?.blur();
+
+        if (this.isErrored) {
+          throw new Error('Input value is not valid');
+        }
+      },
+
+      errorText: new ErrorText({ text: null }),
     });
   }
+
+  isErrored: boolean = false;
 
   render() {
     return `
@@ -35,6 +54,8 @@ export class Input extends Block {
         {{{ inputField }}}
         
         <span class="input__label"> {{ label }} </span>
+
+        {{{ errorText }}}
       </label>
     `;
   }

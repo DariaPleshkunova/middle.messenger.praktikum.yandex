@@ -1,17 +1,21 @@
 import Block from '../../utils/Block';
 import { Time } from '../time';
 
-interface MessageProps {
+export interface MessageProps {
   className?: string,
   imageUrl?: string,
   text?: string,
+  datetime?: string,
 }
 
 export class Message extends Block {
   constructor(props: MessageProps) {
     super({
       ...props,
-      time: new Time({ className: 'message__time', text: '12:00', datetime: '2024-03-04T12:00' }),
+      time: new Time({
+        className: 'message__time',
+        datetime: props.datetime,
+      }),
     });
   }
 

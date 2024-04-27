@@ -5,6 +5,10 @@
         fill: $color--icon;
     }
 
+    &_success {
+        fill: $color--success;
+    }
+
     &_danger {
         fill: $color--danger;
     }
@@ -19,6 +23,10 @@
 
         &_standard {
             stroke: $color--icon;
+        }
+
+        &_success {
+            stroke: $color--success;
         }
 
         &_danger {

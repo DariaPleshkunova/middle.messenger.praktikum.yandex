@@ -18,7 +18,8 @@ export default function validateInput(input: HTMLInputElement) {
     email: 'email',
     phone: 'phone',
     password: 'password',
-    confirm_password: 'password',
+    oldPassword: 'password',
+    newPassword: 'password',
   };
 
   const currentType: string = inputTypes[inputName] || 'no-validation';

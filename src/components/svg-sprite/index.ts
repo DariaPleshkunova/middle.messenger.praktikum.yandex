@@ -1,1 +1,0 @@
-export { SvgSprite } from './SvgSprite';

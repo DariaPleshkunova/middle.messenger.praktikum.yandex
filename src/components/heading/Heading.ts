@@ -1,6 +1,6 @@
 import Block from '../../utils/Block';
 
-interface HeadingProps {
+export interface HeadingProps {
   className?: string,
   text?: string,
 }
