@@ -160,7 +160,6 @@ export class ProfilePopup extends Popup {
   profileButton = this.getContent()?.querySelector('.js-profile-button');
 
   render() {
-    console.log('rende');
     const parentRender = super.render();
 
     const form = this.children.form;
