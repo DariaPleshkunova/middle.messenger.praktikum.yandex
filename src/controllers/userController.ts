@@ -1,5 +1,6 @@
 import { UserAPI } from '../api/UserAPI';
 import store from '../utils/Store';
+import checkResponse from '../utils/checkResponse';
 
 const api = new UserAPI();
 
@@ -7,15 +8,9 @@ const userController = {
   async getUser() {
     try {
       const response = await api.getUser() as XMLHttpRequest;
-      const responseData = JSON.parse(response.responseText);
-      const status = response.status;
-
-      if (status === 200) {
-        store.set('user', responseData);
-        return true;
-      }
-
-      return false;
+      const responseData = checkResponse(response);
+      store.set('user', responseData);
+      return responseData;
     } catch (err) {
       console.log(err);
     }
@@ -25,14 +20,13 @@ const userController = {
     try {
       store.set('badge', null);
       const response = await api.findUserByLogin(login) as XMLHttpRequest;
-      const responseData = JSON.parse(response.responseText);
-      const status = response.status;
+      const responseData = checkResponse(response);
 
-      if (status >= 200 && status < 300 && responseData.length) {
-        return responseData[0];
+      if (responseData.length === 0) {
+        throw new Error('This user does not exist');
       }
 
-      throw new Error('This user does not exist');
+      return responseData[0];
     } catch (err) {
       store.set('badge', { message: err.message });
       console.log(err);
@@ -43,15 +37,8 @@ const userController = {
     try {
       store.set('badge', null);
       const response = await api.editPassword(data) as XMLHttpRequest;
-      const status = response.status;
 
-      if (status >= 200 && status < 300) {
-        store.set('badge', { message: 'Password changed', isError: false });
-        return true;
-      }
-
-      const responseData = JSON.parse(response.response);
-      throw new Error(responseData.reason);
+      return checkResponse(response, () => store.set('badge', { message: 'Password changed', isError: false }));
     } catch (err) {
       store.set('badge', { message: err.message });
       console.log(err);
@@ -62,15 +49,9 @@ const userController = {
     try {
       store.set('badge', null);
       const response = await api.editProfile(data) as XMLHttpRequest;
-      const responseData = JSON.parse(response.responseText);
-      const status = response.status;
-
-      if (status >= 200 && status < 300) {
-        store.set('user', responseData);
-        return true;
-      }
-
-      throw new Error(responseData.reason);
+      const responseData = checkResponse(response);
+      store.set('user', responseData);
+      return responseData;
     } catch (err) {
       store.set('badge', { message: err.message });
       console.log(err);

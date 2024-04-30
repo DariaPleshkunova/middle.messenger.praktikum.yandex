@@ -11,6 +11,7 @@ const url = {
   chats: {
     base: `${baseUrl}/chats`,
     users: `${baseUrl}/chats/users`,
+    avatar: `${baseUrl}/chats/avatar`,
     token: `${baseUrl}/chats/token`,
   },
 

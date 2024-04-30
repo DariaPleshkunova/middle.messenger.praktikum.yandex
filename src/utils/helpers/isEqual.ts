@@ -1,4 +1,4 @@
-export default function isEqual(obj1: any, obj2: any): boolean {
+export default function isEqual(obj1: Record<string, unknown>, obj2: Record<string, unknown>): boolean {
   if (typeof obj1 !== typeof obj2) {
     return false;
   }
@@ -15,7 +15,7 @@ export default function isEqual(obj1: any, obj2: any): boolean {
   }
 
   for (const key of keys1) {
-    if (!isEqual(obj1[key], obj2[key])) {
+    if (!isEqual(obj1[key] as Record<string, unknown>, obj2[key] as Record<string, unknown>)) {
       return false;
     }
   }

@@ -8,10 +8,10 @@ enum METHODS {
 }
 
 interface RequestOptions {
-  data?: Record<string, any>;
+  data?: Record<string, unknown> | FormData;
   method?: METHODS;
   timeout?: number;
-  headers?: Record<string, any>;
+  headers?: Record<string, string>;
 }
 
 type HTTPMethod = (url: string, options?: RequestOptions) => Promise<unknown>;

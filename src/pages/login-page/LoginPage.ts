@@ -43,7 +43,7 @@ export class LoginPage extends Block {
           }),
         ],
 
-        onSubmit: async (data) => {
+        onSubmit: async (data: Record<string, unknown>) => {
           const isSuccess = await authController.logIn(data);
 
           if (isSuccess) {

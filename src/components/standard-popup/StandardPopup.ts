@@ -8,10 +8,11 @@ import { Input } from '../input';
 interface StandardPopupProps {
   headingText: string;
   inputs?: Input[];
-  onSubmit?: (data: any) => Promise<void>;
+  onSubmit?: (data: unknown) => Promise<void>;
   submitButtonClass: string,
   submitButtonText: string,
   dataPopup?: string,
+  imageInputName?: string,
 }
 
 export class StandardPopup extends Popup {
@@ -31,6 +32,8 @@ export class StandardPopup extends Popup {
         }),
 
         inputs: props.inputs,
+
+        imageInputName: props.imageInputName,
 
         cancelButton: new Link({
           className: 'js-close-modal',

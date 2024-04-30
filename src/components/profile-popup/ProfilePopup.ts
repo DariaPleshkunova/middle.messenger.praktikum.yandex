@@ -11,7 +11,8 @@ import connect from '../../utils/connect';
 import authController from '../../controllers/authController';
 import userController from '../../controllers/userController';
 
-import url from '../../api/url';
+import store from '../../utils/Store';
+
 import { Indexed, PageProps, UserState } from '../../types';
 
 export class ProfilePopup extends Popup {
@@ -65,7 +66,7 @@ export class ProfilePopup extends Popup {
           const isSuccess = await authController.logOut();
 
           if (isSuccess) {
-            this.getContent()?.classList.remove('is-active');
+            this.setProps({ isActive: false });
             props.routeHandlers.onLoginRoute();
           }
         },
@@ -129,7 +130,7 @@ export class ProfilePopup extends Popup {
           const avatarInput = formElement?.querySelector('input[name="avatar"]') as HTMLInputElement;
           const avatarFile = avatarInput.files ? avatarInput.files[0] : null;
 
-          const isEditProfileSuccess = await userController.editProfile(data);
+          const isEditProfileSuccess = await userController.editProfile(data as Record<string, unknown>);
           const isEditAvatarSuccess = await userController.editAvatar(avatarFile);
 
           if (isEditProfileSuccess && isEditAvatarSuccess) {
@@ -150,7 +151,25 @@ export class ProfilePopup extends Popup {
           }
         },
       }),
+
+      onHideModal: () => {
+        store.set('popup.profile', false);
+
+        if (props.routeHandlers) {
+          props.routeHandlers.onChatsRoute();
+        }
+
+        this.setProps({ isActive: false });
+      },
     });
+  }
+
+  componentDidUpdate(oldProps: PageProps, newProps: PageProps): boolean {
+    if (oldProps.isActive !== newProps.isActive) {
+      this.setProps({ isActive: newProps.isActive });
+    }
+
+    return true;
   }
 
   profileFormButtons = this.getContent()?.querySelector('.js-profile-form-buttons');
@@ -176,7 +195,7 @@ export class ProfilePopup extends Popup {
     });
 
     if (this.props.avatar) {
-      form.children.avatar.setProps({ imageUrl: `${url.resources}/${this.props.avatar}` });
+      form.children.avatar.setProps({ imageUrl: this.props.avatar });
     }
 
     return parentRender.replace('{{dataPopup}}', 'profile').replace('{{ popupContent }}', `
@@ -199,6 +218,12 @@ export class ProfilePopup extends Popup {
 
 function mapUserToProps(state: Indexed) {
   const userState = state.user as UserState;
+  const popupState = state.popup as Record<string, boolean>;
+  let profileIsActive = false;
+
+  if (popupState) {
+    profileIsActive = popupState.profile;
+  }
 
   if (userState) {
     return {
@@ -209,6 +234,7 @@ function mapUserToProps(state: Indexed) {
       avatar: userState.avatar,
       email: userState.email,
       phone: userState.phone,
+      isActive: profileIsActive,
     };
   }
 }
