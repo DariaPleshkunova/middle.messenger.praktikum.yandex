@@ -62,6 +62,14 @@ export class ChatAPI extends BaseAPI {
     });
   }
 
+  async editAvatar(data: FormData) {
+    const response = await chatAPIInstance.put(url.chats.avatar, {
+      data,
+    });
+
+    return response;
+  }
+
   getToken(id: number) {
     return chatAPIInstance.post(`${url.chats.token}/${id}`, {
       headers: {

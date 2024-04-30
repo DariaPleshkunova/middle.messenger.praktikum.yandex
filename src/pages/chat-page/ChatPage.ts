@@ -15,9 +15,13 @@ export class ChatPage extends Block {
   constructor(props: Indexed) {
     super({
       ...props,
-      sideMenu: new SideMenu({}),
       dialog: new Dialog({}),
+
       profilePopup: new ProfilePopup({ routeHandlers: props.routeHandlers }),
+
+      sideMenu: new SideMenu({
+        routeHandlers: props.routeHandlers,
+      }),
 
       newChatPopup: new StandardPopup({
         dataPopup: 'add-user',
@@ -25,8 +29,8 @@ export class ChatPage extends Block {
         submitButtonClass: 'button_success',
         submitButtonText: 'Add',
 
-        onSubmit: async (data) => {
-          const user = await userController.findUserByLogin(data.login);
+        onSubmit: async (data: Record<string, unknown>) => {
+          const user = await userController.findUserByLogin(data.login as string);
 
           if (user) {
             const chat = await chatController.createChat(`${user.first_name} ${user.second_name}`);
@@ -72,8 +76,8 @@ export class ChatPage extends Block {
           }),
         ],
 
-        onSubmit: async (data) => {
-          const isSuccess = await userController.editPassword(data);
+        onSubmit: async (data: Record<string, unknown>) => {
+          const isSuccess = await userController.editPassword(data as { oldPassword: string; newPassword: string; });
 
           if (isSuccess) {
             this.children.editPasswordPopup.getContent()?.classList.remove('is-active');
@@ -104,8 +108,8 @@ export class ChatPage extends Block {
         submitButtonClass: 'button_success',
         submitButtonText: 'Add',
 
-        onSubmit: async (data) => {
-          const user = await userController.findUserByLogin(data.login);
+        onSubmit: async (data: Record<string, unknown>) => {
+          const user = await userController.findUserByLogin(data.login as string);
 
           if (user) {
             const chatId = store.getState().currentChatId as number;
@@ -133,8 +137,8 @@ export class ChatPage extends Block {
         submitButtonClass: 'button_danger',
         submitButtonText: 'Delete',
 
-        onSubmit: async (data) => {
-          const user = await userController.findUserByLogin(data.login);
+        onSubmit: async (data: Record<string, unknown>) => {
+          const user = await userController.findUserByLogin(data.login as string);
 
           if (user) {
             const chatId = store.getState().currentChatId as number;
@@ -154,6 +158,28 @@ export class ChatPage extends Block {
             required: true,
           }),
         ],
+      }),
+
+      changeChatImagePopup: new StandardPopup({
+        dataPopup: 'change-chat-image',
+        headingText: 'Change image',
+        submitButtonClass: 'button_success',
+        submitButtonText: 'Confirm',
+        imageInputName: 'avatar',
+
+        onSubmit: async () => {
+          const form = this.children.changeChatImagePopup;
+          const formElement = form.getContent();
+          const avatarInput = formElement?.querySelector('input[name="avatar"]') as HTMLInputElement;
+          const avatarFile = avatarInput.files ? avatarInput.files[0] : null;
+          const chatId = store.getState().currentChatId as Blob;
+
+          const isEditAvatarSuccess = await chatController.editAvatar(chatId, avatarFile);
+
+          if (isEditAvatarSuccess) {
+            this.children.changeChatImagePopup.getContent()?.classList.remove('is-active');
+          }
+        },
       }),
 
       badge: new Badge({}),
@@ -195,6 +221,7 @@ export class ChatPage extends Block {
         {{{ editPasswordPopup }}}
         {{{ deleteChatPopup }}}
         {{{ deleteUserPopup }}}
+        {{{ changeChatImagePopup }}}
 
         {{{ badge }}}
       </div>

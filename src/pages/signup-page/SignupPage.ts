@@ -66,7 +66,7 @@ export class SignupPage extends Block {
           }),
         ],
 
-        onSubmit: async (data) => {
+        onSubmit: async (data: Record<string, unknown>) => {
           const isSuccess = await authController.signUp(data);
 
           if (isSuccess) {

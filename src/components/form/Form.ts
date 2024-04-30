@@ -12,7 +12,7 @@ interface FormProps {
   id?: string,
   isProfileForm?: boolean,
   buttonsWrapperClass?: string,
-  onSubmit?(prop: any): void,
+  onSubmit?(prop: unknown): void,
   textarea?: Textarea,
   avatar?: Avatar,
   heading?: Heading,
@@ -21,6 +21,7 @@ interface FormProps {
   inputs?: Input[],
   emptyInputsAfterSubmit?: boolean,
   events?: Indexed,
+  imageInputName?: string,
 }
 
 export class Form extends Block {
@@ -49,8 +50,11 @@ export class Form extends Block {
           if (textarea) {
             const textareaElement = textarea.getContent() as HTMLTextAreaElement;
 
+            if (!textareaElement.value.trim()) return;
+
             if (textareaElement) {
               this.getFormContent(textareaElement);
+
               textareaElement.value = '';
             }
           }
@@ -75,13 +79,13 @@ export class Form extends Block {
     const formElement = this.getContent();
     const avatar = this.children.avatar;
 
-    const input = formElement?.querySelector('.profile-popup__avatar-input');
+    const input = formElement?.querySelector('input[name="avatar"]');
     input?.addEventListener('input', (e: InputEvent) => {
       const reader = new FileReader();
 
       reader.onload = (event) => {
-        const imageUrl = event.target?.result;
-        avatar.setProps({ imageUrl });
+        const imageUrlFull = event.target?.result;
+        avatar.setProps({ imageUrlFull });
       };
 
       const target = e.target;
@@ -112,6 +116,10 @@ export class Form extends Block {
           <div class="inputs-wrapper">
             {{{ inputs }}}
           </div>
+        {{/if}}
+
+        {{#if imageInputName}}
+          <input type="file" name={{imageInputName}} accept="image/*">
         {{/if}}
 
         <div class="buttons-wrapper {{buttonsWrapperClass}}">

@@ -4,12 +4,14 @@ import { InputField } from '../input-field';
 import { ChatsList } from '../chats-list';
 import { AddButton } from '../add-button';
 
-import url from '../../api/url';
 import connect from '../../utils/connect';
 import { Indexed, UserState } from '../../types';
+import { ProfileTrigger } from '../profile-trigger';
 
 interface SideMenuProps {
   avatar?: string,
+  routeHandlers?: Record<string, () => void>,
+  profilePopupInstance?: Block,
 }
 
 export class SideMenu extends Block {
@@ -23,17 +25,25 @@ export class SideMenu extends Block {
         placeholder: 'Search',
         skipValidation: true,
       }),
-      avatar: new Avatar({ className: 'avatar_viewtype_person side-menu__avatar', imageUrl: props.avatar }),
       chatsList: new ChatsList({ className: 'side-menu__chats-list js-chats-list' }),
       addButton: new AddButton({
         className: 'side-menu__add-button',
+      }),
+
+      profilePopupTrigger: new ProfileTrigger({
+        avatar: new Avatar({ className: 'avatar_viewtype_person side-menu__avatar', imageUrl: props.avatar }),
+        onClick: () => {
+          if (props.routeHandlers) {
+            props.routeHandlers.onProfileRoute();
+          }
+        },
       }),
     });
   }
 
   render() {
     if (this.props.avatar) {
-      this.children.avatar.setProps({ imageUrl: `${url.resources}/${this.props.avatar}` });
+      this.children.profilePopupTrigger.children.avatar.setProps({ imageUrl: this.props.avatar });
     }
 
     return `
@@ -41,9 +51,7 @@ export class SideMenu extends Block {
         <div class="side-menu__top-container">
           {{{ inputField }}}
 
-          <button class="button-reset js-modal-btn side-menu__avatar-button js-modal-btn" data-popup-trigger="profile">
-            {{{ avatar }}}
-          </button>
+          {{{ profilePopupTrigger }}}
         </div>
 
         {{{ chatsList }}}

@@ -16,6 +16,13 @@ export class ContextMenu extends Block {
         }),
         new Link({
           className: 'text_default js-modal-btn',
+          iconId: '#pencil',
+          iconClass: 'icon_info icon_20',
+          text: 'Change chat image',
+          dataPopup: 'change-chat-image',
+        }),
+        new Link({
+          className: 'text_default js-modal-btn',
           iconId: '#delete',
           iconClass: 'icon_danger icon_20',
           text: 'Delete from chat',
