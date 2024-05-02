@@ -10,6 +10,7 @@ export class Time extends Block {
   constructor(props: TimeProps) {
     super({
       ...props,
+      text: props.text || props.datetime?.split('T').pop()?.slice(0, 5) || '',
     });
   }
 

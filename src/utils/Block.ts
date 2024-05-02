@@ -104,12 +104,19 @@ export default abstract class Block <Props extends Record<string, any> = Record<
     return { children, props, lists };
   }
 
-  setProps = (nextProps: unknown) => {
+  setProps = (nextProps: Props) => {
     if (!nextProps) {
       return;
     }
 
-    Object.assign(this.props, nextProps);
+    Object.entries(nextProps).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        this.lists[key] = value;
+        this._render();
+      } else {
+        Object.assign(this.props, nextProps);
+      }
+    });
   };
 
   get element() {
@@ -226,6 +233,12 @@ export default abstract class Block <Props extends Record<string, any> = Record<
   hide() {
     if (this.getContent()) {
       this.getContent()!.style.display = 'none';
+    }
+  }
+
+  remove() {
+    if (this.getContent()) {
+      this.getContent()!.remove();
     }
   }
 }

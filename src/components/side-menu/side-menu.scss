@@ -1,6 +1,8 @@
 @import "./src/styles/constants";
 
 .side-menu {
+    flex-shrink: 0;
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -45,5 +47,11 @@
                 visibility: hidden;
             }
         }
+    }
+
+    &__add-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
     }
 }

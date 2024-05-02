@@ -1,10 +1,18 @@
 import Block from '../../utils/Block';
 import { Link } from '../../components/link';
+import { PageProps } from '../../types';
 
 export class Error404Page extends Block {
-  constructor() {
+  constructor(props: PageProps) {
     super({
-      link: new Link({ text: 'Back to chats' }),
+      ...props,
+      link: new Link({
+        text: 'Back to chats',
+        onClick: () => {
+          props.routeHandlers.onBackRoute();
+          props.routeHandlers.onBackRoute();
+        },
+      }),
     });
   }
 

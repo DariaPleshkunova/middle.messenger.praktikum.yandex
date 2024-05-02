@@ -1,8 +1,9 @@
+import { Indexed } from '../../types';
 import { Form } from '../form';
 import { Textarea } from '../textarea';
 
 interface MessageFormProps {
-  className?: string,
+  onSubmit: (data: Indexed) => void;
 }
 
 export class MessageForm extends Form {

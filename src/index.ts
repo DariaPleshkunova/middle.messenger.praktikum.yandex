@@ -1,101 +1,112 @@
 import Block from './utils/Block';
+import Router from './utils/Router';
 import { LoginPage } from './pages/login-page';
 import { SignupPage } from './pages/signup-page';
 import { ChatPage } from './pages/chat-page';
 import { Error404Page } from './pages/error-404-page';
 import { Error500Page } from './pages/error-500-page';
 
-import { SvgSprite } from './components/svg-sprite';
+import userController from './controllers/userController';
+import store from './utils/Store';
 
-class TemporaryNavButton extends Block {
-  constructor(props: { text: string, onClick: () => void }) {
+import { Indexed } from './types';
+
+export class Page extends Block {
+  constructor(props: Indexed) {
     super({
       ...props,
-      events: {
-        click: () => props.onClick(),
-      },
     });
-  }
-
-  render(): string {
-    return `
-      <button>{{text}}</button> 
-    `;
-  }
-}
-
-class Page extends Block {
-  constructor(props: { page: Block }) {
-    super({
-      ...props,
-      temporaryButtons: [
-        new TemporaryNavButton({
-          text: 'Login',
-          onClick: () => {
-            this.setProps({ page: new LoginPage() });
-          },
-        }),
-
-        new TemporaryNavButton({
-          text: 'Sign up',
-          onClick: () => {
-            this.setProps({ page: new SignupPage() });
-          },
-        }),
-
-        new TemporaryNavButton({
-          text: 'Chat page',
-          onClick: () => {
-            this.setProps({ page: new ChatPage() });
-          },
-        }),
-
-        new TemporaryNavButton({
-          text: 'Error 404',
-          onClick: () => {
-            this.setProps({ page: new Error404Page() });
-          },
-        }),
-
-        new TemporaryNavButton({
-          text: 'Error 500',
-          onClick: () => {
-            this.setProps({ page: new Error500Page() });
-          },
-        }),
-      ],
-      svgSprite: new SvgSprite(),
-    });
-  }
-
-  componentDidUpdate(oldProps: { page: Block }, newProps: { page: Block }) {
-    if (oldProps.page !== newProps.page) {
-      this.children.page = newProps.page;
-    }
-
-    return true;
   }
 
   render() {
     return `
-      <div>
-        {{{ svgSprite }}}
-
-        {{{ page }}}
-
-        <div style="position: absolute; top: 10px; right: 10px; z-index: 100;
-          display: flex; flex-direction: column; gap: 10px">
-            {{{ temporaryButtons }}}
-        </div>
-      </div>
-        
+      {{{ page }}}
     `;
   }
 }
 
-const container: HTMLElement | null = document.getElementById('app');
+const router = new Router('app');
 
-if (container instanceof HTMLElement) {
-  const block = new Page({ page: new LoginPage() });
-  container.append(block.getContent()!);
+const routes = {
+  base: '/',
+  login: '/login',
+  signup: '/sign-up',
+  chats: '/messenger',
+  error404: '/error-404',
+  error500: '/error-500',
+  profile: '/messenger/profile',
+};
+
+export const routeHandlers = {
+  onLoginRoute: () => {
+    router.go(routes.login);
+  },
+  onSignupRoute: () => {
+    router.go(routes.signup);
+  },
+  onChatsRoute: () => {
+    router.go(routes.chats);
+  },
+  onError404Route: () => {
+    router.go(routes.error404);
+  },
+  onError500Route: () => {
+    router.go(routes.error500);
+  },
+  onProfileRoute: () => {
+    router.go(routes.profile);
+  },
+  onBackRoute: () => {
+    router.back();
+  },
+};
+
+const loginPage = new Page({
+  page: new LoginPage({ routeHandlers }),
+});
+
+const signupPage = new Page({
+  page: new SignupPage({ routeHandlers }),
+});
+
+const chatPage = new Page({
+  page: new ChatPage({ routeHandlers }),
+});
+
+const error404Page = new Page({
+  page: new Error404Page({ routeHandlers }),
+});
+
+const error500Page = new Page({
+  page: new Error500Page({ routeHandlers }),
+});
+
+router
+  .use('/', loginPage)
+  .use(routes.login, loginPage)
+  .use(routes.signup, signupPage)
+  .use(routes.chats, chatPage)
+  .use(routes.error404, error404Page)
+  .use(routes.error500, error500Page)
+  .use(routes.profile, chatPage)
+  .start();
+
+if (window.location.pathname === routes.chats || window.location.pathname === routes.profile) {
+  userController.getUser().then((isSuccess) => {
+    if (!isSuccess) {
+      routeHandlers.onLoginRoute();
+    }
+  });
 }
+
+const pathnames = Object.values(routes);
+
+if (window.location.pathname && !pathnames.find((path) => path === window.location.pathname)) {
+  routeHandlers.onError404Route();
+}
+
+if (window.location.pathname === routes.profile) {
+  store.set('popup.profile', true);
+}
+
+store.set('routeHandlers', routeHandlers);

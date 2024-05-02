@@ -1,16 +1,7 @@
 import Block from '../../utils/Block';
-import { Link } from '../link';
-import { Form } from '../form';
-
-interface PopupProps {
-  dataPopup?: string,
-  editProfileButton?: Link,
-  logOutButton?: Link,
-  form?: Form,
-}
 
 export class Popup extends Block {
-  constructor(props: PopupProps) {
+  constructor(props: Record<string, unknown>) {
     super({
       ...props,
       events: {
@@ -19,13 +10,21 @@ export class Popup extends Block {
           const modalOverlay = this.getContent()?.querySelector('.js-modal-overlay');
 
           if (e.target === modalOverlay) {
-            this.getContent()?.classList.remove('is-active');
+            if (props.onHideModal && typeof props.onHideModal === 'function') {
+              props.onHideModal();
+            } else {
+              this.getContent()?.classList.remove('is-active');
+            }
           }
 
           if (closeModal) {
             closeModal.forEach((item) => {
               if (item.contains(e.target as Node)) {
-                this.getContent()?.classList.remove('is-active');
+                if (props.onHideModal && typeof props.onHideModal === 'function') {
+                  props.onHideModal();
+                } else {
+                  this.getContent()?.classList.remove('is-active');
+                }
               }
             });
           }
@@ -36,7 +35,7 @@ export class Popup extends Block {
 
   render() {
     return `
-      <div class="popup js-popup" data-popup={{dataPopup}}>
+      <div class="popup js-popup {{#if isActive}}is-active{{/if}}" data-popup={{dataPopup}}>
         <div class="popup__overlay js-modal-overlay"></div>
     
         <div class="popup__wrapper">

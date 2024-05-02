@@ -1,8 +1,12 @@
 import Block from '../../utils/Block';
+import url from '../../api/url';
 
 interface AvatarProps {
   className?: string;
   isStandard?: boolean;
+  imageUrl?: string;
+  imageUrlFull?: string;
+  initials?: string;
 }
 
 export class Avatar extends Block {
@@ -15,11 +19,13 @@ export class Avatar extends Block {
   render() {
     return `
       <div class="avatar {{ className }}">
-        {{#if imageUrl }}
-          <img src="{{ imageUrl }}" alt="Картинка профиля">
+        {{#if imageUrlFull }}
+          <img src="{{imageUrlFull}}" class="avatar__image" alt="Картинка профиля">
+        {{else if imageUrl }}
+          <img src="${url.resources}/{{imageUrl}}" class="avatar__image" alt="Картинка профиля">
         {{else}}
           {{#if isStandard }}
-            <span> BM </span>
+            <span> {{ initials }} </span>
           {{/if}}
         {{/if}}            
       </div>
