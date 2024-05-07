@@ -59,7 +59,7 @@ class Route {
 export default class Router {
   private static __instance: Router | null = null;
 
-  private routes: Route[];
+  routes: Route[];
 
   private history: History;
 
