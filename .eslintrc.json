@@ -25,5 +25,5 @@
     "no-plusplus": "off",
     "no-prototype-builtins": "off"
   },
-  "ignorePatterns": ["node_modules/", "dist/", "vite.config.js", "server.cjs"]
+  "ignorePatterns": ["node_modules/", "dist/", "vite.config.js", "server.cjs", "mochaSetup.js"]
 }
